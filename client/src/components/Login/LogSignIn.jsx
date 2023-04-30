@@ -4,7 +4,58 @@ import style from './logsignIn.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import {auth,provider,Gitprovider} from '../../firebase';
 import { ProviderId, createUserWithEmailAndPassword,signInWithEmailAndPassword,signInWithPopup } from 'firebase/auth';
+import { async } from '@firebase/util';
+import { response } from 'express';
 const LogSignIn = () => {
+
+    //GITHUB LOGIN
+    const CLIENT_ID = "0a2008d2460307811069"
+    const [rerender,setRerender] = useState(false);
+    useEffect(()=>{
+      // http://localhost:3000/?code=d3805c80a8beca3437b5
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const codeParam = urlParams.get("code")
+      console.log(codeParam);
+
+      if(codeParam && (localStorage.getItem("accessToken") === null)){
+        async function getAccessToken(){
+            await fetch("http://localhost:4000/getAccessToken?code="+ codeParam,{
+              method:"GET"
+            }).then((response)=>{
+              return response.json();
+            }).then((data)=>{
+              console.log(data);
+              if(data.access_token){
+                localStorage.setItem("accessToken",data.access_token);
+                setRerender(!rerender);
+              }
+            })
+        }
+        getAccessToken();
+      }
+    },[]);
+
+    const getUserData = async ()=>{
+      await fetch ("http://localhost:4000/getUserData",{
+        method:"GET",
+        headers:{
+          "Authorization":"Bearer "+ localStorage.getItem("accessToken") 
+        }
+      }).then((response)=>{
+        return response.json();
+      }).then((data)=>{
+        console.log(data);
+      })
+    }
+
+   
+
+   const loginWithGITHUB = () =>{
+    window.location.assign("https://github.com/login/oauth/authorize?client_id="+CLIENT_ID)
+   }
+
     //अवसर्पिणी
     const handleSignUp = () => {
         const container = document.getElementById('container');
@@ -92,15 +143,10 @@ const LogSignIn = () => {
          <form className={style.form} onSubmit={signIn}>
                 <h1 className={style.h1}>Sign in</h1>
                 <div className={style.socialContainer}>
-                {gvalue ?(
-                           <a className={`${style.a} ${style.social}`} onClick={signInwithgoogle} >
-                             <i className="fab fa-google-plus-g"></i>
-                           </a>):(
-                             <p className={style.p}>{gerror}</p>
-                         ) }
+              
                         
-                    <a className={`${style.a} ${style.social}`}href="#" ><i className="fab fa-google"></i></a>
-                    <a className={`${style.a} ${style.social}`}href="#" ><i className="fab fa-github"></i></a>
+                    <a className={`${style.a} ${style.social}`} onClick={signInwithgoogle} href="#" ><i className="fab fa-google"></i></a>
+                    <a className={`${style.a} ${style.social}`} onClick={loginWithGITHUB}href="#" ><i className="fab fa-github"></i></a>
                 </div>
                 <span className={style.span}>or use your account</span>
                 <input className={style.input} type="email" name="email" placeholder='Enter your mail' 

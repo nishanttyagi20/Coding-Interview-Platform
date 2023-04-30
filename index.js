@@ -1,6 +1,9 @@
 const app = require("express")();
 const server = require("http").createServer(app);
 const cors = require("cors");
+
+
+
 const io = require("socket.io")(server, {
 	cors: {
 		origin: "*",
@@ -9,6 +12,8 @@ const io = require("socket.io")(server, {
 });
 
 app.use(cors());
+app.use(bodyParser.json());
+
 // 'https://plasma-interview.onrender.com'
 const PORT = process.env.PORT || 5000;
 
@@ -43,5 +48,7 @@ io.on("connection", (socket) => {
 		
 	// });
 });
+
+
 
 server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

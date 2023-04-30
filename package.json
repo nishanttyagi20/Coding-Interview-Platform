@@ -1,24 +1,34 @@
 {
-	"name": "coding-interview-platform",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"start": "node index.js",
-		"dev": "nodemon index.js"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"cors": "^2.8.5",
-		"express": "^4.17.1",
-		"nanoid": "^4.0.0",
-		"nodemon": "^2.0.7",
-		"serve": "^11.3.2",
-		"socket.io": "^4.0.0"
-	},
-	"devDependencies": {
-		"gh-pages": "^5.0.0"
-	}
+  "name": "coding-interview-platform",
+  "version": "1.0.0",
+  "description": "Became tired of companies still using zoom or google meet to take coding interviews which have nowhere to code. They even make you code in google docs because of this. So this allows the companies to conduct their coding interviews with an in-built IDE which supports the majority of the languages.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nanoid": "^4.0.0",
+    "node-fetch": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "serve": "^11.3.2",
+    "socket.io": "^4.0.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bePratham/Coding-Interview-Platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bePratham/Coding-Interview-Platform/issues"
+  },
+  "homepage": "https://github.com/bePratham/Coding-Interview-Platform#readme"
 }
