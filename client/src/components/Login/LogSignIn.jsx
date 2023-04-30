@@ -3,7 +3,7 @@ import {useState,useEffect} from 'react';
 import style from './logsignIn.module.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import {auth,provider,Gitprovider} from '../../firebase';
-import { ProviderId, createUserWithEmailAndPassword,signInWithEmailAndPassword,signInWithPopup } from 'firebase/auth';
+import {  GithubAuthProvider, createUserWithEmailAndPassword,signInWithEmailAndPassword,signInWithPopup } from 'firebase/auth';
 const LogSignIn = () => {
     //अवसर्पिणी
     const handleSignUp = () => {
@@ -44,23 +44,31 @@ const LogSignIn = () => {
         const [gerror,setGerror]=useState(null);
       const signInwithgoogle =()=>{
         signInWithPopup(auth,provider).then((data)=>{
-          // const name=data.user.displayName;
           const email=data.user.email;
-          // const profile=data.user.photoURL;
                 setgValue(email)
-                    localStorage.setItem("email",email);
-                    // localStorage.setItem("name",name);
-                    // localStorage.setItem("profile",profile);
+                    localStorage.setItem("email",email);                    
         }).catch((error)=>{
-          setGerror(gerror.message);
+          setGerror(error.message);
         }) }
          useEffect(()=>{
             setgValue(localStorage.getItem('email'))
               })
+         
+
                 //with github
-
-
-
+                const [gitvalue, setGitvalue] = useState(true);
+                const [giterror, setGiterror] = useState(null);
+                const signInWithGithub = () => {
+                  signInWithPopup(auth, Gitprovider).then((result) => {
+                      console.log("Shit");
+                      setGitvalue(result.user);
+                      const credential = GithubAuthProvider.credentialFromResult(result);
+                       const token = credential.accessToken;
+                    })
+                    .catch((er) => {
+                      setGiterror(er.code);
+                    });
+                  }
 
       return (
         <div className={style.body}>
@@ -92,15 +100,21 @@ const LogSignIn = () => {
          <form className={style.form} onSubmit={signIn}>
                 <h1 className={style.h1}>Sign in</h1>
                 <div className={style.socialContainer}>
-                {gvalue ?(
-                           <a className={`${style.a} ${style.social}`} onClick={signInwithgoogle} >
-                             <i className="fab fa-google-plus-g"></i>
-                           </a>):(
-                             <p className={style.p}>{gerror}</p>
-                         ) }
-                        
-                    <a className={`${style.a} ${style.social}`}href="#" ><i className="fab fa-google"></i></a>
-                    <a className={`${style.a} ${style.social}`}href="#" ><i className="fab fa-github"></i></a>
+                          {gvalue ?(
+                                    <a className={`${style.a} ${style.social}`} onClick={signInwithgoogle} >
+                                      <i className="fab fa-google-plus-g"></i>
+                                    </a>):(
+                                      <p className={style.p}>{gerror}</p>
+                                  ) }
+                                  
+                         {gitvalue ?(<>
+                           <a className={`${style.a} ${style.social}`} onClick={signInWithGithub} >
+                             <i className="fab fa-github"></i>
+                           </a>
+                            <p className={style.p}>{giterror}</p></>
+                           ):(
+                             <p className={style.p}>{giterror}</p>
+                         )}
                 </div>
                 <span className={style.span}>or use your account</span>
                 <input className={style.input} type="email" name="email" placeholder='Enter your mail' 
@@ -139,5 +153,4 @@ const LogSignIn = () => {
     </div>
   )
 }
-
 export default LogSignIn;

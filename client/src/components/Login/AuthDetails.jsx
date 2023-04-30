@@ -1,5 +1,5 @@
-import React,{useEffect, useState} from 'react'
-import {auth,Googleprovider,Gitprovider} from '../../firebase';
+import React,{useEffect, useState} from 'react';
+import {auth} from '../../firebase';
 import { BrowserRouter as Router, Route, Routes,Link} from 'react-router-dom';
 import { onAuthStateChanged , signOut} from 'firebase/auth';
 import LogSignIn from './LogSignIn';
@@ -15,9 +15,7 @@ const AuthDetails = () => {
                 setAuthUser(null)
             }
         });
-        return ()=>{
-            listen();
-        }
+        return  listen;
     },[]);
     const usersignOut=()=>{
         signOut(auth).then(()=>{
@@ -41,7 +39,6 @@ const AuthDetails = () => {
               </Routes>
             )}
           </Router>
-    {/* <ExApp/> */}
         </div>
       );
     };
