@@ -8,7 +8,7 @@ import ExApp from '../../ExApp';
 const AuthDetails = () => {
     const [authUser,setAuthUser]=useState(null);
     useEffect(()=>{
-        const listen = onAuthStateChanged(auth,(user)=>{
+        const listen=onAuthStateChanged(auth,(user)=>{
             if(user){
                 setAuthUser(user)
             }else{
